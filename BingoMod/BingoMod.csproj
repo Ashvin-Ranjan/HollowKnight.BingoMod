@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <AssemblyTitle>BingoMod</AssemblyTitle>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <DebugType>portable</DebugType>
+        <Copyright>Copyright © 2021</Copyright>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+        <LangVersion>latest</LangVersion>
+        <!--
+            Update this to be the `Managed` folder of your Hollow Knight install in real mods,
+            or to point to the nescessary assemblies referenced by this mod.
+        -->
+        <HollowKnightRefs>C:\Program Files (x86)\Steam\steamapps\common\Hollow Knight\hollow_knight_Data\Managed</HollowKnightRefs>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="Images\**\*.png" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Images\**\*.png" />
+    </ItemGroup>
+  
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp">
+          <HintPath>$(HollowKnightRefs)\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+          <HintPath>$(HollowKnightRefs)\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+          <HintPath>$(HollowKnightRefs)\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.ImageConversionModule">
+          <HintPath>$(HollowKnightRefs)\UnityEngine.ImageConversionModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+          <HintPath>$(HollowKnightRefs)\UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+          <HintPath>$(HollowKnightRefs)\UnityEngine.UI.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UIElementsModule">
+          <HintPath>$(HollowKnightRefs)\UnityEngine.UIElementsModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UIModule">
+          <HintPath>$(HollowKnightRefs)\UnityEngine.UIModule.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+</Project>
