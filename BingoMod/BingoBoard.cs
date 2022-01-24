@@ -10,16 +10,15 @@ namespace BingoMod
         private static void ToggleButtonGoal(string name)
         {
             int id = int.Parse(name.Substring(11));
-            BingoMod.LoadedInstance.Log(id);
             BingoMod.LoadedInstance.SetGoalStatus(id, !BingoMod.LoadedInstance.completed.Contains(id));
         }
 
         public static void BuildMenu(GameObject canvas)
         {
-            BingoMod.LoadedInstance.Log(canvas);
-            panel = new CanvasPanel(canvas, GUIController.Instance.images["boardbg"], new Vector2(1270f, 25f), Vector2.zero, new Rect(0f, 0f, GUIController.Instance.images["boardbg"].width, GUIController.Instance.images["boardbg"].height));
+            // Do not make duplicate boards
+            if (panel != null) panel.Destroy();
 
-            BingoMod.LoadedInstance.Log(panel);
+            panel = new CanvasPanel(canvas, GUIController.Instance.images["boardbg"], new Vector2(1270f, 25f), Vector2.zero, new Rect(0f, 0f, GUIController.Instance.images["boardbg"].width, GUIController.Instance.images["boardbg"].height));
 
             Rect buttonRect = new Rect(0, 0, GUIController.Instance.images["boardsquare"].width, GUIController.Instance.images["boardsquare"].height);
 

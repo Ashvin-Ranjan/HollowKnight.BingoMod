@@ -32,6 +32,7 @@ namespace BingoMod
         public static readonly BingoObjective PET_MOSS_CHARGER = CreateObjective(7, "Pet the Massive Moss Charger");
         public static readonly BingoObjective KILL_PACIFIED_MANTIS = CreateObjective(8, "Kill a mantis after its been pacified");
         public static readonly BingoObjective DESTROY_BACKER_MESSAGES = CreateObjective(9, "Destroy all beliver tablets");
+        public static readonly BingoObjective KILL_MAGGOTS = CreateObjective(10, "Kill the maggots");
 
 
         public static readonly Dictionary<int, BingoObjective> OBJECTIVES = new Dictionary<int, BingoObjective>()
@@ -46,6 +47,7 @@ namespace BingoMod
             {PET_MOSS_CHARGER.id, PET_MOSS_CHARGER},
             {KILL_PACIFIED_MANTIS.id, KILL_PACIFIED_MANTIS},
             {DESTROY_BACKER_MESSAGES.id, DESTROY_BACKER_MESSAGES},
+            {KILL_MAGGOTS.id, KILL_MAGGOTS},
         };
     }
 }

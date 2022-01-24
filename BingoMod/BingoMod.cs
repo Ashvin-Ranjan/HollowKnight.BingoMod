@@ -39,6 +39,7 @@ namespace BingoMod
             this.Log("Initializing Mod");
 
             ModHooks.NewGameHook += this.InitializeBoardAndGUI;
+            ModHooks.AfterSavegameLoadHook += OnLoadInitializeBoardAndGUI;
 
             GUIController.Instance.BuildMenus();
         }
@@ -46,8 +47,14 @@ namespace BingoMod
         public void Unload()
         {
             ModHooks.NewGameHook -= this.InitializeBoardAndGUI;
+            ModHooks.AfterSavegameLoadHook -= OnLoadInitializeBoardAndGUI;
 
             LoadedInstance = null;
+        }
+
+        private void OnLoadInitializeBoardAndGUI(SaveGameData _)
+        {
+            this.InitializeBoardAndGUI();
         }
 
         private void InitializeBoardAndGUI()
@@ -90,8 +97,6 @@ namespace BingoMod
 
             this.Log("Board initialized!");
             this.Log($"Initialized as {result}");
-
-            GUIController.Instance.BuildMenus();
         }
 
         public void SetGoalStatus(int id, bool complete = true)
@@ -193,6 +198,14 @@ namespace BingoMod
                         ModHooks.SetPlayerBoolHook += ObjectiveHandlers.DestroyedAllTablets;
                     else
                         ModHooks.SetPlayerBoolHook -= ObjectiveHandlers.DestroyedAllTablets;
+                    break;
+
+                // KILL_MAGGOTS
+                case 10:
+                    if (add)
+                        ModHooks.SetPlayerBoolHook += ObjectiveHandlers.MaggotKill;
+                    else
+                        ModHooks.SetPlayerBoolHook -= ObjectiveHandlers.MaggotKill;
                     break;
 
                 default:

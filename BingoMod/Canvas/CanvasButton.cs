@@ -79,7 +79,6 @@ namespace BingoMod.Canvas
 
         private void ButtonClicked()
         {
-            BingoMod.LoadedInstance.Log(buttonName);
             if (clicked != null && buttonName != null) clicked(buttonName);
         }
 

@@ -24,8 +24,7 @@ namespace BingoMod
         /// </summary>
         public static bool ForceHideUI()
         {
-            return (GameManager.instance.IsNonGameplayScene()
-                && !GameManager.instance.IsCinematicScene()) || BingoMod.LoadedInstance.uiState == UIState.Hidden; // Show UI in cutscenes
+            return GameManager.instance.IsNonGameplayScene() || GameManager.instance.sceneName == "Menu_Title" || BingoMod.LoadedInstance.uiState == UIState.Hidden; // Show UI in cutscenes
         }
 
         public void BuildMenus()
@@ -40,6 +39,7 @@ namespace BingoMod
             canvas.AddComponent<GraphicRaycaster>();
 
             ModHooks.NewGameHook += () => BingoBoard.BuildMenu(canvas);
+            ModHooks.AfterSavegameLoadHook += _ => BingoBoard.BuildMenu(canvas);
 
             DontDestroyOnLoad(canvas);
         }

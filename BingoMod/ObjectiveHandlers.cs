@@ -93,5 +93,15 @@ namespace BingoMod
             }
             return orig;
         }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static bool MaggotKill(string name, bool orig)
+        {
+            if (name == "killedPrayerSlug" && orig)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.KILL_MAGGOTS.id);
+            }
+            return orig;
+        }
     }
 }
