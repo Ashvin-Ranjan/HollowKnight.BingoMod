@@ -1,4 +1,5 @@
 ﻿using Modding;
+using System;
 using System.Reflection;
 using System.Collections.Generic;
 
@@ -13,8 +14,8 @@ namespace BingoMod
     public class BingoMod : Mod, IMenuMod, ILocalSettings<BoardSaveData>
     {
         public bool ToggleButtonInsideMenu => false;
-        public const int WIDTH = 2;
-        public const int HEIGHT = 5;
+        public const int WIDTH = 5;
+        public const int HEIGHT = 4;
 
         public static BingoMod LoadedInstance { get; set; }
 
@@ -61,15 +62,33 @@ namespace BingoMod
         {
             if (BoardData.completed == null || BoardData.Board == null)
             {
+                // Make the version as random as possiable
+                int seed = Environment.TickCount * (Environment.Version.Minor + 1) * (Environment.MachineName.Length + Environment.OSVersion.Version.Minor + 1);
+                Random rand = new Random(seed);
+                Log($"Board generated with seed: {seed}");
+                List<int> objectivesLeft = new List<int>(Objectives.OBJECTIVES.Keys);
                 completed = new List<int>(25);
                 Board = new int[HEIGHT, WIDTH];
                 for (int i = 0; i < HEIGHT; i++)
                 {
                     for (int j = 0; j < WIDTH; j++)
                     {
-                        // TODO: RANDOM SELECTION
-                        Board[i, j] = j + (WIDTH * i);
-                        EditObjectiveHook(j + (WIDTH * i));
+                        int objective = 0;
+                        if (objectivesLeft.Count == 0)
+                        {
+                            LogError("Objectives ran out! Defaulting to 0");
+                        } else
+                        {
+                            int index = rand.Next(objectivesLeft.Count);
+                            objective = objectivesLeft[index];
+                            objectivesLeft.RemoveAt(index);
+                            foreach (int exclude in Objectives.OBJECTIVES[objective].incompatible)
+                            {
+                                objectivesLeft.Remove(exclude);
+                            }
+                        }
+                        Board[i, j] = objective;
+                        EditObjectiveHook(objective);
                     }
                 }
                 BoardData.completed = completed;
@@ -112,7 +131,7 @@ namespace BingoMod
             BoardData.completed = completed;
             BoardData.Board = Board;
             BingoBoard.UpdateId(id, complete);
-            this.Log($"\"{Objectives.OBJECTIVES[id].name}\" completed, {HEIGHT * WIDTH - completed.Count} more objectives to go.");
+            this.Log($"\"{Objectives.OBJECTIVES[id].name}\" {(complete ? "" : "un")}completed, {HEIGHT * WIDTH - completed.Count} more objectives to go.");
             if (HEIGHT * WIDTH == completed.Count) this.Log("Board complete");
         }
 
@@ -203,9 +222,89 @@ namespace BingoMod
                 // KILL_MAGGOTS
                 case 10:
                     if (add)
-                        ModHooks.SetPlayerBoolHook += ObjectiveHandlers.MaggotKill;
+                        ModHooks.RecordKillForJournalHook += ObjectiveHandlers.MaggotKill;
                     else
-                        ModHooks.SetPlayerBoolHook -= ObjectiveHandlers.MaggotKill;
+                        ModHooks.RecordKillForJournalHook -= ObjectiveHandlers.MaggotKill;
+                    break;
+
+                // GET_SCAMMED
+                case 11:
+                    if (add)
+                        ModHooks.SetPlayerBoolHook += ObjectiveHandlers.ScammedCheck;
+                    else
+                        ModHooks.SetPlayerBoolHook -= ObjectiveHandlers.ScammedCheck;
+                    break;
+
+                // FOUNTAIN_2999
+                case 12:
+                    if (add)
+                        ModHooks.SetPlayerIntHook += ObjectiveHandlers.FountainGeoCheck;
+                    else
+                        ModHooks.SetPlayerIntHook -= ObjectiveHandlers.FountainGeoCheck;
+                    break;
+
+                // ALL_ARCANE_EGGS
+                case 13:
+                    if (add)
+                        ModHooks.SetPlayerIntHook += ObjectiveHandlers.SellAllEggs;
+                    else
+                        ModHooks.SetPlayerIntHook -= ObjectiveHandlers.SellAllEggs;
+                    break;
+
+                // UNMASK_MASK_MAKER
+                case 14:
+                    if (add)
+                        ModHooks.SetPlayerBoolHook += ObjectiveHandlers.MaskMakerUnmasked;
+                    else
+                        ModHooks.SetPlayerBoolHook -= ObjectiveHandlers.MaskMakerUnmasked;
+                    break;
+
+                // COMPLETE_FLOWER_QUEST
+                case 15:
+                    if (add)
+                        ModHooks.SetPlayerBoolHook += ObjectiveHandlers.CheckFlowerQuest;
+                    else
+                        ModHooks.SetPlayerBoolHook -= ObjectiveHandlers.CheckFlowerQuest;
+                    break;
+
+                // FRAGILE_TO_UNBREAKABLE
+                case 16:
+                    if (add)
+                        ModHooks.SetPlayerBoolHook += ObjectiveHandlers.CheckUnbreakableCharm;
+                    else
+                        ModHooks.SetPlayerBoolHook -= ObjectiveHandlers.CheckUnbreakableCharm;
+                    break;
+
+                // DIE_AT_69
+                case 17:
+                    if (add)
+                        ModHooks.BeforePlayerDeadHook += ObjectiveHandlers.DieAt69Check;
+                    else
+                        ModHooks.BeforePlayerDeadHook -= ObjectiveHandlers.DieAt69Check;
+                    break;
+
+                // GET_10_EGGS
+                case 18:
+                    if (add)
+                        ModHooks.SetPlayerIntHook += ObjectiveHandlers.Check10Eggs;
+                    else
+                        ModHooks.SetPlayerIntHook -= ObjectiveHandlers.Check10Eggs;
+                    break;
+
+                // KILL_NAILSMITH
+                case 19:
+                    if (add)
+                        ModHooks.SetPlayerBoolHook += ObjectiveHandlers.KilledNailsmith;
+                    else
+                        ModHooks.SetPlayerBoolHook -= ObjectiveHandlers.KilledNailsmith;
+                    break;
+
+                // SAVE_NAILSMITH
+                case 20:
+                    if (add)
+                        ModHooks.SetPlayerBoolHook += ObjectiveHandlers.SavedNailsmith;
+                    else
+                        ModHooks.SetPlayerBoolHook -= ObjectiveHandlers.SavedNailsmith;
                     break;
 
                 default:

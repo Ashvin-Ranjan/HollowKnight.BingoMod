@@ -20,7 +20,7 @@ namespace BingoMod
         private static GUIController _instance;
 
         /// <summary>
-        /// If this returns true, all DebugMod UI elements will be hidden.
+        /// If this returns true, all BingoMod UI elements will be hidden.
         /// </summary>
         public static bool ForceHideUI()
         {

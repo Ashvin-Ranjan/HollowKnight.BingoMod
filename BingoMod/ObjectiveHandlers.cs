@@ -77,6 +77,7 @@ namespace BingoMod
 
         public static int KillPacifiedMantis(string name, int orig)
         {
+            BingoMod.LoadedInstance.Log(name);
             if (name == "killsMantis" && PlayerData.instance.GetBool("killedMantisLord"))
             {
                 BingoMod.LoadedInstance.SetGoalStatus(Objectives.KILL_PACIFIED_MANTIS.id);
@@ -84,9 +85,9 @@ namespace BingoMod
             return orig;
         }
 
-        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
         public static bool DestroyedAllTablets(string name, bool orig)
         {
+            BingoMod.LoadedInstance.Log(name);
             if (name == "allBelieverTabletsDestroyed" && orig)
             {
                 BingoMod.LoadedInstance.SetGoalStatus(Objectives.DESTROY_BACKER_MESSAGES.id);
@@ -94,12 +95,106 @@ namespace BingoMod
             return orig;
         }
 
-        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
-        public static bool MaggotKill(string name, bool orig)
+        public static void MaggotKill(EnemyDeathEffects enemyDeathEffects, string _, string _1, string _2, string _3)
         {
-            if (name == "killedPrayerSlug" && orig)
+            if (enemyDeathEffects.name.StartsWith("Prayer Slug"))
             {
                 BingoMod.LoadedInstance.SetGoalStatus(Objectives.KILL_MAGGOTS.id);
+            }
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static bool ScammedCheck(string name, bool orig)
+        {
+            if (name == "bankerTheft" && orig)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.GET_SCAMMED.id);
+            }
+            return orig;
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static int FountainGeoCheck(string name, int orig)
+        {
+            if (name == "fountainGeo" && orig == 2999)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.FOUNTAIN_2999.id);
+            }
+            return orig;
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static int SellAllEggs(string name, int orig)
+        {
+            if (name == "soldTrinket4" && orig == 4)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.ALL_ARCANE_EGGS.id);
+            }
+            return orig;
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static bool MaskMakerUnmasked(string name, bool orig)
+        {
+            if (name == "maskmakerUnmasked1" && orig)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.UNMASK_MASK_MAKER.id);
+            }
+            return orig;
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static bool CheckFlowerQuest(string name, bool orig)
+        {
+            if (name == "xunFlowerGiven" && orig)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.COMPLETE_FLOWER_QUEST.id);
+            }
+            return orig;
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static bool CheckUnbreakableCharm(string name, bool orig)
+        {
+            if ((name == "fragileGreed_unbreakable" || name == "fragileHeart_unbreakable" || name == "fragileStrength_unbreakable") && orig)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.FRAGILE_TO_UNBREAKABLE.id);
+            }
+            return orig;
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static void DieAt69Check()
+        {
+            if (PlayerData.instance.GetInt("geo") == 69) BingoMod.LoadedInstance.SetGoalStatus(Objectives.DIE_AT_69.id);
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static int Check10Eggs(string name, int orig)
+        {
+            if (name == "rancidEggs" && orig >= 10)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.GET_10_EGGS.id);
+            }
+            return orig;
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static bool KilledNailsmith(string name, bool orig)
+        {
+            if (name == "nailsmithKilled" && orig)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.KILL_NAILSMITH.id);
+            }
+            return orig;
+        }
+
+        // TODO: TEST IF THIS ACTUALLY LIKE, WORKS
+        public static bool SavedNailsmith(string name, bool orig)
+        {
+            if (name == "nailsmithSpared" && orig)
+            {
+                BingoMod.LoadedInstance.SetGoalStatus(Objectives.SAVE_NAILSMITH.id);
             }
             return orig;
         }
